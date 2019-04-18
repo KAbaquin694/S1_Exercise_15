@@ -117,6 +117,8 @@ function validateNumber() {
             cardNumber.setCustomValidity("Enter your card number");
       } else if (cardNumber.validity.patternMismatch) {
             cardNumber.setCustomValidity("Enter a valid card number");
+      } else if (luhn(cardNumber.value) === false) {
+            cardNumber.setCustomValidity("Enter a legitimate card number");
       } else {
             cardNumber.setCustomValidity("");
       }
@@ -140,7 +142,7 @@ function validateName() {
       }
 }
 
-function sumDigits(nunmStr) {
+function sumDigits(numStr) {
       var digitTotal = 0;
       for (var i = 0; i < numStr.length; i++) {
             digitTotal += parseInt(numStr.charAt(i));
@@ -149,9 +151,16 @@ function sumDigits(nunmStr) {
 }
 
 function luhn(idNum) {
+      var string1 = "";
+      var string2 = "";
       //retrieve odd numbered digits
-
+      for (var i = idNum.length - 1; i >= 0; i -= 2) {
+            string1 += idNum.charAt(i);
+      }
       //Retrieve even numbered digits
-
+      for (var i = idNum.length - 2; i >= 0; i -= 2) {
+            string2 += 2 * idNum.charAt(i);
+      }
       //Return whether sum of digits is divisible by 10
+      return sumDigits(string1 + string2) % 10 === 0;
 }
